@@ -296,21 +296,58 @@
 }
 
 .table-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 1rem 1.5rem;
-}
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
 
-.table-header h3 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
+  .table-title-section {
+    h3 {
+      margin: 0;
+      color: #2c3e50;
+      font-size: 1.2rem;
+    }
 
-.table-header p {
-  margin: 0;
-  opacity: 0.9;
-  font-size: 0.9rem;
+    p {
+      margin: 0.25rem 0 0 0;
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+  }
+
+  .table-actions {
+    .download-btn {
+      background: linear-gradient(135deg, #28a745, #20c997);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+
+      &:hover:not(:disabled) {
+        background: linear-gradient(135deg, #218838, #1aa085);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(0);
+      }
+
+      &:disabled {
+        background: #6c757d;
+        cursor: not-allowed;
+        opacity: 0.6;
+        transform: none;
+        box-shadow: none;
+      }
+    }
+  }
 }
 
 .associates-table {
