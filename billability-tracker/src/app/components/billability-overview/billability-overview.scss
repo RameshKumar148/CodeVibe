@@ -1,0 +1,178 @@
+.overview-container {
+  padding: 0;
+}
+
+.overview-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.overview-header h1 {
+  color: #2c3e50;
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.overview-subtitle {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  margin: 0.5rem 0 0 0;
+}
+
+.monthly-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.month-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.month-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.month-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1rem 1.5rem;
+  text-align: center;
+}
+
+.month-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.month-stats {
+  padding: 1.5rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.stat:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  color: #6c757d;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #2c3e50;
+}
+
+.stat-value.billable {
+  color: #28a745;
+}
+
+.stat-value.non-billable {
+  color: #dc3545;
+}
+
+.stat-value.percentage {
+  color: #007bff;
+}
+
+.stat-value.revenue {
+  color: #fd7e14;
+  font-family: 'Courier New', monospace;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.no-data {
+  text-align: center;
+  padding: 3rem;
+  color: #6c757d;
+  font-style: italic;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .monthly-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .overview-header h1 {
+    font-size: 2rem;
+  }
+
+  .month-stats {
+    padding: 1rem;
+  }
+
+  .stat {
+    padding: 0.5rem 0;
+  }
+
+  .stat-label,
+  .stat-value {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .overview-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .monthly-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .month-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .month-header h3 {
+    font-size: 1.1rem;
+  }
+}

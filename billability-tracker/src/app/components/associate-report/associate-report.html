@@ -1,0 +1,154 @@
+<div class="associate-report-container">
+  <div class="report-header">
+    <h1>👤 Associate Billability Report</h1>
+    <p class="report-subtitle">Individual performance overview for {{ currentYear }}</p>
+  </div>
+
+  <!-- Search Section -->
+  <div class="search-section" *ngIf="!loading">
+    <div class="search-container">
+      <div class="search-header">
+        <h3>🔍 Search Associates</h3>
+      </div>
+      <div class="search-controls">
+        <div class="search-input-group">
+          <select [(ngModel)]="searchBy" class="search-type-select">
+            <option value="id">Search by ID</option>
+            <option value="name">Search by Name</option>
+          </select>
+          <input 
+            type="text" 
+            [(ngModel)]="searchTerm" 
+            (input)="onSearch()"
+            [placeholder]="searchBy === 'id' ? 'Enter Associate ID...' : 'Enter Associate Name...'"
+            class="search-input">
+          <button (click)="onClearSearch()" class="clear-btn" *ngIf="searchTerm">
+            ✖️ Clear
+          </button>
+        </div>
+        <div class="search-results-info" *ngIf="searchTerm">
+          <span class="results-count">{{ filteredAssociateData.length }} result(s) found</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Selected Associate Details -->
+  <div class="selected-associate" *ngIf="selectedAssociate">
+    <div class="selected-header">
+      <h3>{{ getPerformanceIcon(selectedAssociate.billabilityPercentage) }} Associate Details</h3>
+    </div>
+    <div class="selected-content">
+      <div class="associate-info">
+        <div class="info-card">
+          <h4>{{ selectedAssociate.associateName }}</h4>
+          <p><strong>ID:</strong> {{ selectedAssociate.associateId }}</p>
+          <p><strong>Department:</strong> {{ selectedAssociate.department }}</p>
+        </div>
+        <div class="billability-metrics">
+          <div class="metric-item">
+            <span class="metric-label">Total Hours</span>
+            <span class="metric-value">{{ formatNumber(selectedAssociate.totalHours) }}</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">Billable Hours</span>
+            <span class="metric-value billable">{{ formatNumber(selectedAssociate.billableHours) }}</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">Non-Billable Hours</span>
+            <span class="metric-value non-billable">{{ formatNumber(selectedAssociate.nonBillableHours) }}</span>
+          </div>
+          <div class="metric-item highlight">
+            <span class="metric-label">Billability Percentage</span>
+            <span class="metric-value" [class]="getBillabilityClass(selectedAssociate.billabilityPercentage)">
+              {{ selectedAssociate.billabilityPercentage.toFixed(1) }}%
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="performance-indicator">
+        <div class="performance-circle" [class]="getBillabilityClass(selectedAssociate.billabilityPercentage)">
+          <span class="performance-percentage">{{ selectedAssociate.billabilityPercentage.toFixed(0) }}%</span>
+        </div>
+        <p class="performance-status">{{ getBillabilityClass(selectedAssociate.billabilityPercentage) | titlecase }} Performance</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-container" *ngIf="loading">
+    <div class="loading-spinner"></div>
+    <p>Loading associate data...</p>
+  </div>
+
+  <div class="report-content" *ngIf="!loading">
+    <div class="summary-stats">
+      <div class="stat-card">
+        <h3>Total Associates</h3>
+        <p class="stat-value">{{ filteredAssociateData.length }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Average Billability</h3>
+        <p class="stat-value">{{ getAverageBillability() }}%</p>
+      </div>
+      <div class="stat-card">
+        <h3>Total Hours</h3>
+        <p class="stat-value">{{ formatNumber(getTotalHours()) }}</p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <div class="table-header">
+        <div class="table-title-section">
+          <h3>{{ searchTerm ? 'Search Results' : 'All Associates' }}</h3>
+          <p *ngIf="searchTerm">Click on any row to view detailed information</p>
+        </div>
+        <div class="table-actions">
+          <button (click)="downloadExcel()" class="download-btn" [disabled]="filteredAssociateData.length === 0">
+            📊 Download Excel
+          </button>
+        </div>
+      </div>
+      <table class="associates-table">
+        <thead>
+          <tr>
+            <th>Associate ID</th>
+            <th>Associate Name</th>
+            <th>Department</th>
+            <th>Total Hours</th>
+            <th>Billable Hours</th>
+            <th>Non-Billable Hours</th>
+            <th>Billability %</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let associate of filteredAssociateData" 
+              class="table-row" 
+              (click)="selectAssociate(associate)"
+              [class.selected]="selectedAssociate?.associateId === associate.associateId">
+            <td class="associate-id">{{ associate.associateId }}</td>
+            <td class="associate-name">{{ associate.associateName }}</td>
+            <td class="department">{{ associate.department }}</td>
+            <td class="hours">{{ formatNumber(associate.totalHours) }}</td>
+            <td class="billable-hours">{{ formatNumber(associate.billableHours) }}</td>
+            <td class="non-billable-hours">{{ formatNumber(associate.nonBillableHours) }}</td>
+            <td class="billability-percentage">
+              <span class="percentage-badge" [class]="getBillabilityClass(associate.billabilityPercentage)">
+                {{ associate.billabilityPercentage.toFixed(1) }}%
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="no-data" *ngIf="filteredAssociateData.length === 0 && searchTerm">
+      <h3>🔍 No Results Found</h3>
+      <p>No associates found matching "{{ searchTerm }}" when searching by {{ searchBy }}.</p>
+      <button (click)="onClearSearch()" class="clear-search-btn">Clear Search</button>
+    </div>
+
+    <div class="no-data" *ngIf="associateData.length === 0 && !searchTerm">
+      <p>No associate data available for the current year.</p>
+    </div>
+  </div>
+</div>

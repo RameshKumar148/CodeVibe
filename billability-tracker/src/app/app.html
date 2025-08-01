@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<div class="app-container">
+  <!-- Navigation Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        <h1>📊 Billability Tracker</h1>
+        <span class="subtitle">{{ currentYear }} Analytics</span>
+      </div>
+      <nav class="navigation">
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">Dashboard</a>
+        <a routerLink="/overview" routerLinkActive="active" class="nav-link">Overview</a>
+        <a routerLink="/associates" routerLinkActive="active" class="nav-link">Associates</a>
+        <a routerLink="/departments" routerLinkActive="active" class="nav-link">Departments</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <router-outlet />
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; {{ currentYear }} Billability Tracker. Built with Angular.</p>
+  </footer>
+</div>

@@ -1,0 +1,49 @@
+<div class="department-report-container">
+  <div class="report-header">
+    <h1>🏢 Department Billability Report</h1>
+    <p class="report-subtitle">Department-wise performance analysis for {{ currentYear }}</p>
+  </div>
+
+  <div class="loading-container" *ngIf="loading">
+    <div class="loading-spinner"></div>
+    <p>Loading department data...</p>
+  </div>
+
+  <div class="report-content" *ngIf="!loading">
+    <div class="departments-grid">
+      <div class="department-card" *ngFor="let dept of departmentData" [class]="getDepartmentClass(dept.billabilityPercentage)">
+        <div class="card-header">
+          <h3>{{ dept.department }}</h3>
+          <span class="billability-badge" [class]="getDepartmentClass(dept.billabilityPercentage)">
+            {{ dept.billabilityPercentage }}%
+          </span>
+        </div>
+        <div class="card-content">
+          <div class="metric">
+            <span class="metric-label">Total Associates</span>
+            <span class="metric-value">{{ dept.totalAssociates }}</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Billable Hours</span>
+            <span class="metric-value">{{ formatNumber(dept.billableHours) }}</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Non-Billable Hours</span>
+            <span class="metric-value">{{ formatNumber(dept.nonBillableHours) }}</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Total Hours</span>
+            <span class="metric-value">{{ formatNumber(dept.billableHours + dept.nonBillableHours) }}</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="status-text">{{ getDepartmentClass(dept.billabilityPercentage) | titlecase }} Performance</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-data" *ngIf="departmentData.length === 0">
+      <p>No department data available for the current year.</p>
+    </div>
+  </div>
+</div>

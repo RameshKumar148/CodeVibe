@@ -1,0 +1,47 @@
+<div class="overview-container">
+  <div class="overview-header">
+    <h1>📋 Billability Overview</h1>
+    <p class="overview-subtitle">Monthly performance analysis for {{ currentYear }}</p>
+  </div>
+
+  <div class="loading-container" *ngIf="loading">
+    <div class="loading-spinner"></div>
+    <p>Loading overview data...</p>
+  </div>
+
+  <div class="overview-content" *ngIf="!loading">
+    <div class="monthly-grid">
+      <div class="month-card" *ngFor="let month of monthlyData">
+        <div class="month-header">
+          <h3>{{ month.month }} {{ month.year }}</h3>
+        </div>
+        <div class="month-stats">
+          <div class="stat">
+            <span class="stat-label">Billable Hours</span>
+            <span class="stat-value billable">{{ formatNumber(month.totalBillableHours) }}</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Non-Billable Hours</span>
+            <span class="stat-value non-billable">{{ formatNumber(month.totalNonBillableHours) }}</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Associates</span>
+            <span class="stat-value">{{ month.totalAssociates }}</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Billability %</span>
+            <span class="stat-value percentage">{{ month.averageBillabilityPercentage }}%</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Revenue</span>
+            <span class="stat-value revenue">{{ formatCurrency(month.revenue) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-data" *ngIf="monthlyData.length === 0">
+      <p>No monthly data available for the current year.</p>
+    </div>
+  </div>
+</div>
